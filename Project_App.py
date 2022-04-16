@@ -3,14 +3,13 @@ from tkinter import Y
 from unicodedata import name
 import dash
 from dash import dcc , html
-#import dash_core_components as dcc
-#import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
 import plotly.express as px
 from plotly.subplots import make_subplots
+import urllib.request
 from PIL import Image
 import requests
 from io import BytesIO
@@ -19,21 +18,22 @@ from io import BytesIO
 
 ######################################################Data##############################################################
 
-path = 'C:/Users/hugol/Desktop/2Sem/DataVisualization/Projeto Final/'
+path_data = 'https://raw.githubusercontent.com/Dioguini97/DataView_42/main/Data/'
 
-df_players = pd.read_csv(path + 'NBA_Players_With_Team.csv')
-df_teams = pd.read_csv(path + 'NBA_Teams.csv')
-shooting_stats=pd.read_csv(path + 'NBA_Active_Players_Data_14-04-2022.csv')
-players_stats=pd.read_csv(path + 'NBA_Players_Stats_Data_14-04-2022.csv')
-players_avg_stats=pd.read_csv(path + 'Season_Players_Stats.csv',)
-teams_avg_stats=pd.read_csv(path + 'Season_Teams_Stats.csv')
-season_team_standings=pd.read_csv(path + 'NBA_Season_Team_Standings.csv')
+df_players = pd.read_csv(path_data + 'NBA_Players_With_Team.csv')
+df_teams = pd.read_csv(path_data + 'NBA_Teams.csv')
+shooting_stats = pd.read_csv(path_data + 'NBA_Active_Players_Data_14-04-2022.csv')
+players_stats = pd.read_csv(path_data + 'NBA_Players_Stats_Data_14-04-2022.csv')
+players_avg_stats = pd.read_csv(path_data + 'Season_Players_Stats.csv')
+teams_avg_stats = pd.read_csv(path_data + 'Season_Teams_Stats.csv')
+season_team_standings = pd.read_csv(path_data + 'NBA_Season_Team_Standings.csv')
 
-path_to_file_court = 'C:/Users/hugol/Desktop/2Sem/DataVisualization/Projeto Final/nba_court.jpg'
-img_court = Image.open(path_to_file_court)
+path_img = 'https://raw.githubusercontent.com/Dioguini97/DataView_42/main/img/'
+urllib.request.urlretrieve(path_img + 'nba_court.jpg', "nba_court.jpg")
 
-path_to_file_logo = 'C:/Users/hugol/Desktop/2Sem/DataVisualization/Projeto Final/NBA_LOGO.jpg'
-#path_to_file_logo = 'https://i.imgur.com/BJxEocK.png'
+img_court = Image.open("nba_court.jpg")
+
+nba_logo = path_img + 'NBA_LOGO.png'
 
 shooting_categories = ['FGM', 'FGA', 'FG3M', 'FG3A',  'FTM', 'FTA']
 shooting_categories_percent = ['FG_PCT' , 'FG3_PCT' , 'FT_PCT']
@@ -41,7 +41,7 @@ shooting_categories_percent = ['FG_PCT' , 'FG3_PCT' , 'FT_PCT']
 
 ######################################################Interactive Components############################################
 
-players_options = [dict(label=country, value=country) for country in df_players['full_name'].unique()]
+players_options = [dict(label=player, value=player) for player in df_players['full_name'].unique()]
 
 
 dropdown_players = dcc.Dropdown(
@@ -66,32 +66,39 @@ server = app.server
 app.layout = html.Div([
 
     html.Div([
-        html.H1('NBA Current Season Dashboard')
-    ], id='1st row'),
-    html.Div([
-        html.Img(src=path_to_file_logo,className='img')
-    ]),
+            html.H1('NBA Current Season Dashboard'), html.Img(src=nba_logo, id='nba_logo'), html.Hr()]
+       , id='1st_row'),
 
     html.Div([
-        html.Div(
-            html.Label('Player Choice')
-        ),
-        html.Div(
-            dropdown_players
-        )
-    ],style={'width': '49%', 'display': 'inline-block'}),
+        html.Div([
+            html.Div(
+                html.Label('Player Choice')
+            ),
+            html.Div(
+                dropdown_players
+            )
+        ], className='DropdownDiv'),
 
-    html.Div([
-        html.Div(
-            html.Label('Quarter Choice')
-        ),
-        html.Div(
-        dropdown_quarters
-        )
-    ],style={'width': '49%', 'display': 'inline-block'}),
+        html.Div([
+            html.Div(
+                html.Label('Quarter Choice')
+            ),
+            html.Div(
+                dropdown_quarters
+            )
+        ], className='DropdownDiv'),
+        html.Hr()], id='filterDiv'
+    ),
     
     html.Div([
-        
+
+        html.Div([
+            html.Img(id='player_img'),
+            html.Div(
+               [html.P(html.Label('Player Name', id='Player_Name')), html.P(html.Label('Player Height', id='Player_Height')),
+                html.P(html.Label('Player Team', id='Player_Team')), html.P(html.Label('MVP Prize', id='MVP_Prize'))], id='player_text'
+            )], id='player_info'),
+
         html.Div([
             html.Label('Player Sucess Shooting Performance'),
             dcc.Graph(
@@ -104,11 +111,9 @@ app.layout = html.Div([
                     id='player_fail_shooting_graph'
                     )
             ],style={'width': '49%', 'display': 'inline-block'}),
-        html.Div([
-            html.Img(id='player_img',style={'height':'15%', 'width':'15%'})
-        ])
+
         
-    ]),
+    ], id='showDiv'),
     html.Div([
             html.Label('Player Shooting Stats'),
             dcc.Graph(
@@ -129,7 +134,11 @@ app.layout = html.Div([
 
 @app.callback(
     [
-    Output(component_id='player_img',component_property='src'),
+    Output(component_id='player_img', component_property='src'),
+    Output(component_id='Player_Name', component_property='children'),
+    Output(component_id='Player_Height', component_property='children'),
+    Output(component_id='Player_Team', component_property='children'),
+    Output(component_id='MVP_Prize', component_property='children'),
     Output(component_id='player_sucess_shooting_graph', component_property='figure'),
     Output(component_id='player_fail_shooting_graph', component_property='figure'),
     Output(component_id='player_shootings_stats', component_property='figure'),
@@ -145,6 +154,10 @@ def shooting_plots(selected_player,quarter):
     #Set player image
     player_id=df_players[df_players['full_name']==selected_player]['id'].values[0]
     player_img_url='https://cdn.nba.com/headshots/nba/latest/1040x760/'+str(player_id)+'.png'
+
+    player_name = df_players[df_players['id'] == player_id]['full_name'].values[0]
+
+
 
     #Create sucess shooting graph
     img_width = 500
@@ -305,8 +318,9 @@ def shooting_plots(selected_player,quarter):
                  color="Who", barmode="group" ,orientation='h' )
 
 
+    print(player_id)
 
-    return player_img_url,fig_sucess,fig_fail,radar_plot_stats,radar_plot_stats_perc,bar_plot_other_stats
+    return player_img_url,player_name,player_name,player_name,player_name,fig_sucess,fig_fail,radar_plot_stats,radar_plot_stats_perc,bar_plot_other_stats
 
    
 

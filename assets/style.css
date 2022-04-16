@@ -1,0 +1,56 @@
+body{
+    background-color: rgb(211, 211, 198);
+}
+
+h1{
+    color: blue
+    }
+
+
+div#1st_row{
+    position: fixed;
+    display: inline-block;
+}
+
+#player_info{
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+}
+
+#player_text{
+    position: relative;
+    width: 82%;
+    left: 15%;
+    border: 1px solid;
+    top: -100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    'first  second'
+    'third  fourth';
+}
+
+
+img#nba_logo{
+    width: 8%;
+    position: relative;
+    float: right;
+    top: -80px
+    }
+
+img#player_img{
+    height: 15%;
+    width: 15%
+}
+
+.DropdownDiv{
+    width: 45%;
+    display: inline-block;
+}
+
+#filterDiv{
+    width: max-content;
+    display: inline;
+}
