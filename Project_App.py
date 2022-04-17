@@ -80,11 +80,13 @@ app.layout = html.Div([
 
         html.Div([
             html.Label('Player Choice'),
+            html.P(),
             dropdown_players
         ], className='DropDownDiv'),
 
         html.Div([
             html.Label('Quarter Choice'),
+            html.P(),
             dropdown_quarters
         ], className='DropDownDiv')
     ], id='filterDiv'),
@@ -92,74 +94,112 @@ app.layout = html.Div([
     html.Hr(),
     ###STATS###
     html.Div([
-
         html.Div([
-            html.Img(id='player_img'),
-            html.Img(id='flag_country'),
+            html.Div([
+                html.Img(id='player_img'),
+
+                html.Div([
+                    html.P([
+                        html.Label('Name: ', className='player_text_lab'),
+                        html.Label('Player Name', id='Player_Name')
+                    ]),
+                    html.P([
+                        html.Label('Age: ', className='player_text_lab'),
+                        html.Label('Player Age', id='Player_Age')
+                    ]),
+                    html.P([
+                        html.Label('Height: ', className='player_text_lab'),
+                        html.Label('Player Height', id='Player_Height')
+                    ]),
+                    html.P([
+                        html.Label('Weight: ', className='player_text_lab'),
+                        html.Label('Player Weight', id='Player_Weight')
+                    ]),
+                    html.P([
+                        html.Label('Position: ', className='player_text_lab'),
+                        html.Label('Player Position', id='Player_Position')
+                    ]),
+                    html.P([
+                        html.Label('Active Since: ', className='player_text_lab'),
+                        html.Label('Player Active Since', id='Player_Active_Since')
+                    ]),
+                    html.P([
+                        html.Label('Country: ', className='player_text_lab'),
+                        html.Label('Player Country ', id='Player_Country'),
+                        html.Img(id='flag_country', width='50px'),
+                    ])
+                ], id='player_text'),
+
+                html.P([
+                        html.Label(id='Player_Jersey')
+                    ]),
+            ], id='player_info'),
 
             html.Div([
-                html.P([
-                    html.Label('Name: ', className='player_text_lab'),
-                    html.Label('Player Name', id='Player_Name')
-                ]),
-                html.P([
-                    html.Label('Height: ', className='player_text_lab'),
-                    html.Label('Player Height', id='Player_Height')
-                ]),
-                html.P([
-                    html.Label('Team: ', className='player_text_lab'),
-                    html.Label('Player Team', id='Player_Team')
-                ]),
-                html.P([
-                    html.Label('# MVP: ', className='player_text_lab'),
-                    html.Label('MVP Prize', id='MVP_Prize')
-                ]),
-                html.P([
-                    html.Label('Age: ', className='player_text_lab'),
-                    html.Label('Player Age', id='Player_Age')
-                ]),
-                html.P([
-                    html.Label('Position: ', className='player_text_lab'),
-                    html.Label('Player Position', id='Player_Position')
-                ]),
-                html.P([
-                    html.Label('Weight: ', className='player_text_lab'),
-                    html.Label('Player Weight', id='Player_Weight')
-                ]),
-                html.P([
-                    html.Label('Active Since: ', className='player_text_lab'),
-                    html.Label('Player Active Since', id='Player_Active_Since')
-                ]),
-                html.P([
-                    html.Label(id='Player_Jersey')
-                ])
-            ], id='player_text')
+                html.Img(id='team_logo'),
 
-        ], id='player_info'),
+                html.Div([
+                    html.P([
+                        html.Label('Name: ', className='player_text_lab'),
+                        html.Label('Team Name', id='team_name')
+                    ]),
+                    html.P([
+                        html.Label('Conference: ', className='player_text_lab'),
+                        html.Label('Team Conference', id='team_conference')
+                    ]),
+                    html.P([
+                        html.Label('No. Wins: ', className='player_text_lab'),
+                        html.Label('Team Wins', id='team_wins')
+                    ]),
+                    html.P([
+                        html.Label('No. Losses: ', className='player_text_lab'),
+                        html.Label('Team Losses', id='team_losses')
+                    ]),
+                    html.P([
+                        html.Label('Win Percentage: ', className='player_text_lab'),
+                        html.Label('Team Win Percentage', id='team_win_pct')
+                    ]),
+                    html.P([
+                        html.Label('Highest Win Streak: ', className='player_text_lab'),
+                        html.Label('Team Win Streak', id='team_win_streak')
+                    ]),
+                    html.P([
+                        html.Label('Highest Lose Streak: ', className='player_text_lab'),
+                        html.Label('Team Win Lose Streak', id='team_loss_streak')
+                    ])
+                ], id='team_text')
+            ], id='team_info')
+        ], id='show_info'),
+
+        html.Hr(),
 
         html.Div([
 
             html.Div([
-                html.Label('Player Sucess Shooting Performance'),
+                html.Br(),
                 dcc.Graph(id='player_sucess_shooting_graph')], className='graph_shoot'),
             html.Div([
-                html.Label('Player Fail Shooting Performance'),
+                html.Br(),
                 dcc.Graph(id='player_fail_shooting_graph')], className='graph_shoot')
         ], id='DivShootGraph'),
 
+        html.Hr(),
+
         html.Div([
 
             html.Div([
-                html.Label('Player vs Team'),
                 dcc.Graph(id='player_shootings_stats')], className='graph_radar'),
             html.Div([
-                html.Label('Player vs Team'),
                 dcc.Graph(id='player_shootings_stats_per')], className='graph_radar')
             ], id='DivRadarPlot'),
 
+        html.Hr(),
+
         html.Div(dcc.Graph(id='player_others_stats'), className='graph')
 
-    ], id='showDiv')
+    ], id='showDiv'),
+
+
 ], id='main')
 
 ######################################################Callbacks#########################################################
@@ -171,13 +211,21 @@ app.layout = html.Div([
 
     Output(component_id='Player_Name', component_property='children'),
     Output(component_id='Player_Height', component_property='children'),
-    Output(component_id='Player_Team', component_property='children'),
-    Output(component_id='MVP_Prize', component_property='children'),
     Output(component_id='Player_Age', component_property='children'),
     Output(component_id='Player_Position', component_property='children'),
     Output(component_id='Player_Weight', component_property='children'),
     Output(component_id='Player_Active_Since', component_property='children'),
     Output(component_id='Player_Jersey', component_property='children'),
+    Output(component_id='Player_Country', component_property='children'),
+
+    Output(component_id='team_logo', component_property='src'),
+    Output(component_id='team_name', component_property='children'),
+    Output(component_id='team_conference', component_property='children'),
+    Output(component_id='team_wins', component_property='children'),
+    Output(component_id='team_losses', component_property='children'),
+    Output(component_id='team_win_pct', component_property='children'),
+    Output(component_id='team_win_streak', component_property='children'),
+    Output(component_id='team_loss_streak', component_property='children'),
 
     Output(component_id='player_sucess_shooting_graph', component_property='figure'),
     Output(component_id='player_fail_shooting_graph', component_property='figure'),
@@ -197,6 +245,7 @@ def shooting_plots(selected_player,quarter):
 
     player_name = df_players[df_players['id'] == player_id]['full_name'].values[0]
     team_id = df_players[df_players['id'] == player_id]['team_id'].values[0]
+    team_logo_url = 'https://cdn.nba.com/logos/nba/' + str(int(team_id)) + '/global/D/logo.svg'
     player_team = df_teams[df_teams['id'] == team_id]['full_name'].values[0]
 
     player_height = df_players_info[df_players_info['PERSON_ID'] == player_id]['HEIGHT'].values[0]
@@ -219,6 +268,14 @@ def shooting_plots(selected_player,quarter):
     player_weigth = str(round(player_weigth * 0.45359237, 2)) + 'kg'
     player_since = df_players_info[df_players_info['PERSON_ID'] == player_id]['FROM_YEAR'].values[0]
     player_jersey = df_players_info[df_players_info['PERSON_ID'] == player_id]['JERSEY'].values[0]
+
+    # Team Standings
+    team_conference = season_team_standings[season_team_standings['TeamID'] == team_id]['Conference'].values[0]
+    team_wins = season_team_standings[season_team_standings['TeamID'] == team_id]['WINS'].values[0]
+    team_losses = season_team_standings[season_team_standings['TeamID'] == team_id]['LOSSES'].values[0]
+    team_win_pct = str(np.round(season_team_standings[season_team_standings['TeamID'] == team_id]['WinPCT'].values[0] * 100, 2)) + '%'
+    team_win_streak = season_team_standings[season_team_standings['TeamID'] == team_id]['LongWinStreak'].values[0]
+    team_loss_streak = season_team_standings[season_team_standings['TeamID'] == team_id]['LongLossStreak'].values[0]
 
     #Create sucess shooting graph
     img_width = 500
@@ -252,6 +309,7 @@ def shooting_plots(selected_player,quarter):
             sizing="stretch",
             source=img_court)
     )
+    fig_sucess.update_layout(title_text='Player Sucess Shooting Performance', title_x=0.5, paper_bgcolor='rgba(0,0,0,0)')
 
     #Create failled shooting graph
     shooting_player=shooting_stats[shooting_stats['PLAYER_NAME']==selected_player]
@@ -281,106 +339,137 @@ def shooting_plots(selected_player,quarter):
             sizing="stretch",
             source=img_court)
     )
-    
-    #Create RadarPlot for Shooting Statistics
-    categories = ['FGM', 'FGA', 'FG3M', 'FG3A',  'FTM', 'FTA'] #Shooting Statistics
-    categories_percent = ['FG_PCT' , 'FG3_PCT' , 'FT_PCT'] #Shooting Statistics Percentage
+    fig_fail.update_layout(title_text='Player Fail Shooting Performance', title_x=0.5)
+    fig_fail.update_layout(paper_bgcolor='rgba(0,0,0,0)')
 
-    team_selected_player=df_players[df_players['full_name']==selected_player]['team_id'].values[0]
+    # Create RadarPlot for Shooting Statistics
+    categories = ['FGM', 'FGA', 'FG3M', 'FG3A', 'FTM', 'FTA']  # Shooting Statistics
+    categories_percent = ['FG_PCT', 'FG3_PCT', 'FT_PCT']  # Shooting Statistics Percentage
 
-    selected_player_stats=players_avg_stats[players_avg_stats['Player_ID']==player_id][categories].values.flatten().tolist()
-    team_selected_player_stats=teams_avg_stats[teams_avg_stats['Team_ID']==team_selected_player][categories].values.flatten().tolist()
+    team_selected_player = df_players[df_players['full_name'] == selected_player]['team_id'].values[0]
 
-    season_players_stats=players_stats.mean()[['FGM', 'FGA', 'FG_PCT', 'FG3M', 'FG3A', 'FG3_PCT', 'FTM', 'FTA',
-       'FT_PCT', 'OREB', 'DREB', 'REB', 'AST', 'STL', 'BLK', 'TOV', 'PF','PTS']].round(2)#.values.flatten().tolist()
-        
+    selected_player_stats = players_avg_stats[players_avg_stats['Player_ID'] == player_id][
+        categories].values.flatten().tolist()
+    team_selected_player_stats = teams_avg_stats[teams_avg_stats['Team_ID'] == team_selected_player][
+        categories].values.flatten().tolist()
+
+    season_players_stats = players_stats.mean()[['FGM', 'FGA', 'FG_PCT', 'FG3M', 'FG3A', 'FG3_PCT', 'FTM', 'FTA',
+                                                 'FT_PCT', 'OREB', 'DREB', 'REB', 'AST', 'STL', 'BLK', 'TOV', 'PF',
+                                                 'PTS']].round(2)  # .values.flatten().tolist()
+
+    shooting_categories_full = ['Field Goal Made', 'Field Goal Attempt', '3-Point Field Goal Made',
+                                '3-Point Field Goal Attempt', 'Free Throw Made', 'Free Throw Attempt']
+    shooting_categories_percent_full = ['Field Goal %', '3-Point Field Goal%', 'Free Throw %']
+
     radar_plot_stats = go.Figure()
     radar_plot_stats.add_trace(go.Scatterpolar(
         r=selected_player_stats,
-        theta=categories,
+        theta=shooting_categories_full,
         fill='toself',
         name=selected_player
     ))
     radar_plot_stats.add_trace(go.Scatterpolar(
         r=team_selected_player_stats,
-        theta=categories,
+        theta=shooting_categories_full,
         fill='toself',
-        name='Team Stats'
+        name=player_team
     ))
     radar_plot_stats.add_trace(go.Scatterpolar(
         r=season_players_stats[categories],
-        theta=categories,
+        theta=shooting_categories_full,
         fill='toself',
-        name='Season Stats'
+        name='Season'
     ))
     radar_plot_stats.update_layout(
         polar=dict(
             radialaxis=dict(
                 visible=True,
-                range=[0, max(players_avg_stats['FGA'].max(),players_avg_stats['FTA'].max(),players_avg_stats['FG3A'].max())]
+                range=[0, max(players_avg_stats['FGA'].max(), players_avg_stats['FTA'].max(),
+                              players_avg_stats['FG3A'].max())]
             )),
-        showlegend=False
+        showlegend=True,
+        title_text='Absolute Comparison',
+        title_x=.5
     )
+    radar_plot_stats.update_layout(paper_bgcolor='rgba(0,0,0,0)')
 
-    #Radar plot with Shootings Stats %
-    selected_player_stats_percent=players_avg_stats[players_avg_stats['Player_ID']==player_id][categories_percent].values.flatten().tolist()
-    team_selected_player_stats_percent=teams_avg_stats[teams_avg_stats['Team_ID']==team_selected_player][categories_percent].values.flatten().tolist()
+    # Radar plot with Shootings Stats %
+    selected_player_stats_percent = players_avg_stats[players_avg_stats['Player_ID'] == player_id][
+        categories_percent].values.flatten().tolist()
+    team_selected_player_stats_percent = teams_avg_stats[teams_avg_stats['Team_ID'] == team_selected_player][
+        categories_percent].values.flatten().tolist()
+
+    shooting_categories_percent_full = ['Field Goal %', '3-Point Field Goal%', 'Free Throw %']
 
     radar_plot_stats_perc = go.Figure()
     radar_plot_stats_perc.add_trace(go.Scatterpolar(
         r=selected_player_stats_percent,
-        theta=categories_percent,
+        theta=shooting_categories_percent_full,
         fill='toself',
         name=selected_player
     ))
     radar_plot_stats_perc.add_trace(go.Scatterpolar(
         r=team_selected_player_stats_percent,
-        theta=categories_percent,
+        theta=shooting_categories_percent_full,
         fill='toself',
-        name='Team Stats'
+        name=player_team
     ))
     radar_plot_stats_perc.add_trace(go.Scatterpolar(
         r=season_players_stats[categories_percent],
-        theta=categories_percent,
+        theta=shooting_categories_percent_full,
         fill='toself',
-        name='Season Stats'
+        name='Season'
     ))
     radar_plot_stats_perc.update_layout(
         polar=dict(
             radialaxis=dict(
-            visible=True,
-            range=[0, 1]
+                visible=True,
+                range=[0, 1]
             )),
-        showlegend=False
+        showlegend=True,
+        title_text='Relative Comparison',
+        title_x=.5
     )
+    radar_plot_stats_perc.update_layout(paper_bgcolor='rgba(0,0,0,0)')
 
-    #Create Data and Bar Plot with Statistics
-    other_stats=['OREB', 'DREB', 'REB', 'AST', 'STL', 'BLK', 'TOV','PF', 'PTS']
-    arr_who=[]
-    arr_val=[]
-    arr_stat=[]
+    # Create Data and Bar Plot with Statistics
+    other_stats = ['OREB', 'DREB', 'REB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS']
+    other_stats_full = ['Offensive Rebounds', 'Defensive Rebounds', 'Rebounds', 'Assists', 'Steals', 'Blocks',
+                        'Turn Overs', 'Personal Fouls', 'Points']
+    arr_who = []
+    arr_val = []
+    arr_stat = []
     for col in other_stats:
         arr_who.append(selected_player)
-        arr_stat.append(col)
-        arr_val.append(players_avg_stats[players_avg_stats['Player_ID']==player_id][col].values[0])
+        arr_stat.append(other_stats_full[other_stats.index(col)])
+        arr_val.append(players_avg_stats[players_avg_stats['Player_ID'] == player_id][col].values[0])
 
     for col in other_stats:
-        arr_who.append(df_teams[df_teams['id']==int(team_selected_player)]['full_name'].values[0])
-        arr_stat.append(col)
-        arr_val.append(teams_avg_stats[teams_avg_stats['Team_ID']==team_selected_player][col].values[0])
+        arr_who.append(df_teams[df_teams['id'] == int(team_selected_player)]['full_name'].values[0])
+        arr_stat.append(other_stats_full[other_stats.index(col)])
+        arr_val.append(teams_avg_stats[teams_avg_stats['Team_ID'] == team_selected_player][col].values[0])
 
     for col in other_stats:
         arr_who.append("Season")
-        arr_stat.append(col)
+        arr_stat.append(other_stats_full[other_stats.index(col)])
         arr_val.append(season_players_stats[col])
-    comparison_df=pd.DataFrame([pd.Series(arr_who,name='Who'),pd.Series(arr_stat,name='Stat'),pd.Series(arr_val,name='Avg Value')]).T
-    print(comparison_df)
-    bar_plot_other_stats = px.bar(comparison_df, y="Stat", x="Avg Value", 
-                 color="Who", barmode="group" ,orientation='h' )
+    comparison_df = pd.DataFrame(
+        [pd.Series(arr_who, name='Who'), pd.Series(arr_stat, name='Stat'), pd.Series(arr_val, name='Avg Value')]).T
+    bar_plot_other_stats = px.bar(comparison_df, y="Stat", x="Avg Value",
+                                  color="Who", barmode="group", orientation='h')
+    bar_plot_other_stats.update_layout(legend={'title_text': '', 'font_color': 'Black'},
+                                       paper_bgcolor='rgba(0,0,0,0)',
+                                       # plot_bgcolor='rgba(0,0,0,0)'
+                                       )
+    bar_plot_other_stats.update_xaxes(color='Black')
+    bar_plot_other_stats.update_yaxes(color='Black')
+    bar_plot_other_stats.update_xaxes(showgrid=False)
+    bar_plot_other_stats.update_yaxes(showgrid=False)
+
+    bar_plot_other_stats.update_layout(paper_bgcolor='rgba(0,0,0,0)')
 
 
-
-    return player_img_url,player_flag_url,player_name,player_height,player_team,player_name,player_age,player_position,player_weigth,player_since,player_jersey,fig_sucess,fig_fail,radar_plot_stats,radar_plot_stats_perc,bar_plot_other_stats
+    return player_img_url,player_flag_url,player_name,player_height,player_age,player_position,player_weigth,player_since,player_jersey,player_country + ' ',team_logo_url,player_team,team_conference,team_wins,team_losses,team_win_pct,team_win_streak,team_loss_streak,fig_sucess,fig_fail,radar_plot_stats,radar_plot_stats_perc,bar_plot_other_stats
 
    
 
