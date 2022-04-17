@@ -1,0 +1,10 @@
+dash
+numpy
+pandas
+plotly.graph_objs
+plotly.express
+urllib.request
+pillow
+requests
+pycountry
+datetime
