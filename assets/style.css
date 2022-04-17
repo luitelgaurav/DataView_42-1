@@ -41,12 +41,22 @@ img#nba_logo{
     height: max-content;
 }
 
+#team_info{
+    display: inline-block;
+    width: inherit;
+    height: max-content;
+}
+
 img#player_img{
     width: 15%
 }
 
 img#flag_country{
     width: 10%;
+}
+
+img#team_logo{
+    width: 15%
 }
 
 #player_text{
@@ -69,6 +79,22 @@ img#flag_country{
 .player_text_lab{
     font-weight: bold;
     font-size: 14pt;
+}
+
+.team_text_lab{
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+#team_text{
+    position: relative;
+    width: 70%;
+    display: grid;
+    float: right;
+    grid-template-areas:
+    'first  second third'
+    'fourth  fifth sixth'
+    'seventh eigth nineth';
 }
 
 #showDiv{
