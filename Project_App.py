@@ -347,23 +347,26 @@ def shooting_plots(selected_player,quarter):
 
     season_players_stats=players_stats.mean()[['FGM', 'FGA', 'FG_PCT', 'FG3M', 'FG3A', 'FG3_PCT', 'FTM', 'FTA',
        'FT_PCT', 'OREB', 'DREB', 'REB', 'AST', 'STL', 'BLK', 'TOV', 'PF','PTS']].round(2)#.values.flatten().tolist()
-        
+    
+    shooting_categories_full = ['Field Goal Made', 'Field Goal Attempt', 'Field Goal 3 Points Made', 'Field Goal 3 Points Attempt',  'Free Throw Made', 'Free Throw Attempt']
+    shooting_categories_percent_full = ['Field Goal %', 'Field Goal 3 Points %', 'Free Throw %']
+
     radar_plot_stats = go.Figure()
     radar_plot_stats.add_trace(go.Scatterpolar(
         r=selected_player_stats,
-        theta=categories,
+        theta=shooting_categories_full,
         fill='toself',
         name=selected_player
     ))
     radar_plot_stats.add_trace(go.Scatterpolar(
         r=team_selected_player_stats,
-        theta=categories,
+        theta=shooting_categories_full,
         fill='toself',
         name='Team Stats'
     ))
     radar_plot_stats.add_trace(go.Scatterpolar(
         r=season_players_stats[categories],
-        theta=categories,
+        theta=shooting_categories_full,
         fill='toself',
         name='Season Stats'
     ))
@@ -383,19 +386,19 @@ def shooting_plots(selected_player,quarter):
     radar_plot_stats_perc = go.Figure()
     radar_plot_stats_perc.add_trace(go.Scatterpolar(
         r=selected_player_stats_percent,
-        theta=categories_percent,
+        theta=shooting_categories_percent_full,
         fill='toself',
         name=selected_player
     ))
     radar_plot_stats_perc.add_trace(go.Scatterpolar(
         r=team_selected_player_stats_percent,
-        theta=categories_percent,
+        theta=shooting_categories_percent_full,
         fill='toself',
         name='Team Stats'
     ))
     radar_plot_stats_perc.add_trace(go.Scatterpolar(
         r=season_players_stats[categories_percent],
-        theta=categories_percent,
+        theta=shooting_categories_percent_full,
         fill='toself',
         name='Season Stats'
     ))
@@ -430,7 +433,14 @@ def shooting_plots(selected_player,quarter):
     comparison_df=pd.DataFrame([pd.Series(arr_who,name='Who'),pd.Series(arr_stat,name='Stat'),pd.Series(arr_val,name='Avg Value')]).T
     bar_plot_other_stats = px.bar(comparison_df, y="Stat", x="Avg Value", 
                  color="Who", barmode="group" ,orientation='h' )
-
+    bar_plot_other_stats.update_layout(legend={'title_text':'','font_color':'white'},
+                  paper_bgcolor='rgba(0,0,0,0)',
+                  # plot_bgcolor='rgba(0,0,0,0)'
+                 )
+    bar_plot_other_stats.update_xaxes(color='white')
+    bar_plot_other_stats.update_yaxes(color='white')
+    bar_plot_other_stats.update_xaxes(showgrid=False)
+    bar_plot_other_stats.update_yaxes(showgrid=False)
 
 
     return player_img_url,player_flag_url,player_name,player_height,player_team,player_name,player_age,player_position,player_weigth,player_since,player_jersey, \
