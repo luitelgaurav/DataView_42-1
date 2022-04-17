@@ -157,7 +157,43 @@ app.layout = html.Div([
                 dcc.Graph(id='player_shootings_stats_per')], className='graph_radar')
             ], id='DivRadarPlot'),
 
-        html.Div(dcc.Graph(id='player_others_stats'), className='graph')
+        html.Div(dcc.Graph(id='player_others_stats'), className='graph'),
+
+        html.Div([
+            html.Img(id='team_logo'),
+
+            html.Div([
+                html.P([
+                    html.Label('Name: ', className='player_text_lab'),
+                    html.Label('Team Name', id='team_name')
+                ]),
+                html.P([
+                    html.Label('Conference: ', className='player_text_lab'),
+                    html.Label('Team Conference', id='team_conference')
+                ]),
+                html.P([
+                    html.Label('No. Wins: ', className='player_text_lab'),
+                    html.Label('Team Wins', id='team_wins')
+                ]),
+                html.P([
+                    html.Label('No. Losses: ', className='player_text_lab'),
+                    html.Label('Team Losses', id='team_losses')
+                ]),
+                html.P([
+                    html.Label('Win Percentage: ', className='player_text_lab'),
+                    html.Label('Team Win Percentage', id='team_win_pct')
+                ]),
+                html.P([
+                    html.Label('Highest Win Streak: ', className='player_text_lab'),
+                    html.Label('Team Win Streak', id='team_win_streak')
+                ]),
+                html.P([
+                    html.Label('Highest Lose Streak: ', className='player_text_lab'),
+                    html.Label('Team Win Lose Streak', id='team_loss_streak')
+                ])
+            ], id='team_text')
+
+        ], id='team_info'),
 
     ], id='showDiv')
 ], id='main')
@@ -179,6 +215,15 @@ app.layout = html.Div([
     Output(component_id='Player_Active_Since', component_property='children'),
     Output(component_id='Player_Jersey', component_property='children'),
 
+    Output(component_id='team_logo',component_property='src'),
+    Output(component_id='team_name',component_property='children'),
+    Output(component_id='team_conference', component_property='children'),
+    Output(component_id='team_wins', component_property='children'),
+    Output(component_id='team_losses', component_property='children'),
+    Output(component_id='team_win_pct', component_property='children'),
+    Output(component_id='team_win_streak', component_property='children'),
+    Output(component_id='team_loss_streak', component_property='children'),
+
     Output(component_id='player_sucess_shooting_graph', component_property='figure'),
     Output(component_id='player_fail_shooting_graph', component_property='figure'),
     Output(component_id='player_shootings_stats', component_property='figure'),
@@ -197,6 +242,7 @@ def shooting_plots(selected_player,quarter):
 
     player_name = df_players[df_players['id'] == player_id]['full_name'].values[0]
     team_id = df_players[df_players['id'] == player_id]['team_id'].values[0]
+    team_logo_url='https://cdn.nba.com/logos/nba/'+str(int(team_id))+'/global/D/logo.svg'
     player_team = df_teams[df_teams['id'] == team_id]['full_name'].values[0]
 
     player_height = df_players_info[df_players_info['PERSON_ID'] == player_id]['HEIGHT'].values[0]
@@ -219,6 +265,14 @@ def shooting_plots(selected_player,quarter):
     player_weigth = str(round(player_weigth * 0.45359237, 2)) + 'kg'
     player_since = df_players_info[df_players_info['PERSON_ID'] == player_id]['FROM_YEAR'].values[0]
     player_jersey = df_players_info[df_players_info['PERSON_ID'] == player_id]['JERSEY'].values[0]
+
+    #Team Standings
+    team_conference=season_team_standings[season_team_standings['TeamID']==team_id]['Conference'].values[0]
+    team_wins=season_team_standings[season_team_standings['TeamID']==team_id]['WINS'].values[0]
+    team_losses=season_team_standings[season_team_standings['TeamID']==team_id]['LOSSES'].values[0]
+    team_win_pct=season_team_standings[season_team_standings['TeamID']==team_id]['WinPCT'].values[0]
+    team_win_streak=season_team_standings[season_team_standings['TeamID']==team_id]['LongWinStreak'].values[0]
+    team_loss_streak=season_team_standings[season_team_standings['TeamID']==team_id]['LongLossStreak'].values[0]
 
     #Create sucess shooting graph
     img_width = 500
@@ -374,13 +428,14 @@ def shooting_plots(selected_player,quarter):
         arr_stat.append(col)
         arr_val.append(season_players_stats[col])
     comparison_df=pd.DataFrame([pd.Series(arr_who,name='Who'),pd.Series(arr_stat,name='Stat'),pd.Series(arr_val,name='Avg Value')]).T
-    print(comparison_df)
     bar_plot_other_stats = px.bar(comparison_df, y="Stat", x="Avg Value", 
                  color="Who", barmode="group" ,orientation='h' )
 
 
 
-    return player_img_url,player_flag_url,player_name,player_height,player_team,player_name,player_age,player_position,player_weigth,player_since,player_jersey,fig_sucess,fig_fail,radar_plot_stats,radar_plot_stats_perc,bar_plot_other_stats
+    return player_img_url,player_flag_url,player_name,player_height,player_team,player_name,player_age,player_position,player_weigth,player_since,player_jersey, \
+            team_logo_url,player_team,team_conference,team_wins,team_losses,team_win_pct,team_win_streak,team_loss_streak, \
+            fig_sucess,fig_fail,radar_plot_stats,radar_plot_stats_perc,bar_plot_other_stats
 
    
 
