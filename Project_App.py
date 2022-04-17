@@ -270,7 +270,7 @@ def shooting_plots(selected_player,quarter):
     team_conference=season_team_standings[season_team_standings['TeamID']==team_id]['Conference'].values[0]
     team_wins=season_team_standings[season_team_standings['TeamID']==team_id]['WINS'].values[0]
     team_losses=season_team_standings[season_team_standings['TeamID']==team_id]['LOSSES'].values[0]
-    team_win_pct=season_team_standings[season_team_standings['TeamID']==team_id]['WinPCT'].values[0]
+    team_win_pct=str(np.round(season_team_standings[season_team_standings['TeamID']==team_id]['WinPCT'].values[0]*100,2))+ '%'
     team_win_streak=season_team_standings[season_team_standings['TeamID']==team_id]['LongWinStreak'].values[0]
     team_loss_streak=season_team_standings[season_team_standings['TeamID']==team_id]['LongLossStreak'].values[0]
 
