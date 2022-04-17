@@ -2,55 +2,105 @@ body{
     background-color: rgb(211, 211, 198);
 }
 
-h1{
-    color: blue
-    }
+div#main{
+    width: 100%;
+    height: 100%;
+}
 
-
-div#1st_row{
-    position: fixed;
+div#st_row{
     display: inline-block;
+    width: inherit;
+    height: 0;
+}
+
+h1{
+    color: black
+}
+
+img#nba_logo{
+    width: 7%;
+    position: relative;
+    float: right;
+    top: -80px
+}
+
+#filterDiv{
+    width: inherit;
+    display: inline;
+}
+
+.DropDownDiv{
+    width: 48%;
+    display: inline-block;
+    margin: 0 1%
 }
 
 #player_info{
     display: inline-block;
-    height: 100%;
-    width: 100%;
+    width: inherit;
+    height: max-content;
+}
+
+img#player_img{
+    width: 15%
+}
+
+img#flag_country{
+    width: 10%;
 }
 
 #player_text{
     position: relative;
-    width: 82%;
-    left: 15%;
-    border: 1px solid;
-    top: -100px;
+    width: 70%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas:
-    'first  second'
-    'third  fourth';
-}
-
-
-img#nba_logo{
-    width: 8%;
-    position: relative;
     float: right;
-    top: -80px
-    }
-
-img#player_img{
-    height: 15%;
-    width: 15%
+    grid-template-areas:
+    'first  second third'
+    'fourth  fifth sixth'
+    'seventh eigth nineth';
 }
 
-.DropdownDiv{
-    width: 45%;
+#Player_Jersey{
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+
+.player_text_lab{
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+#showDiv{
+    width: inherit;
+    height: max-content;
+}
+
+#DivShootGraph{
+    display: inline-block;
+    width: inherit;
+    height: max-content;
+}
+
+.graph_shoot{
+    width: 49%;
     display: inline-block;
 }
 
-#filterDiv{
-    width: max-content;
-    display: inline;
+.graph_radar{
+    width: 49%;
+    display: inline-block;
 }
+/*#player_sucess_shooting_graph{
+    grid-area: first;
+}
+
+#player_fail_shooting_graph{
+    grid-area: second;
+}
+
+.graph{
+    width: 49%;
+    display: inline-block;
+}
+
