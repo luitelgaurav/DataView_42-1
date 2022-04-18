@@ -36,7 +36,7 @@ urllib.request.urlretrieve(path_img + 'nba_court.jpg', "nba_court.jpg")
 
 img_court = Image.open("nba_court.jpg")
 
-nba_logo = path_img + 'NBA_LOGO.png'
+nba_logo = path_img + 'NBA_Logo.png'
 
 shooting_categories = ['FGM', 'FGA', 'FG3M', 'FG3A',  'FTM', 'FTA']
 shooting_categories_percent = ['FG_PCT', 'FG3_PCT', 'FT_PCT']
