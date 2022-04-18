@@ -2,7 +2,7 @@ from email.policy import default
 from tkinter import Y
 from unicodedata import name
 import dash
-from dash import dcc , html
+from dash import dcc, html
 from dash.dependencies import Input, Output, State
 import numpy as np
 import pandas as pd
